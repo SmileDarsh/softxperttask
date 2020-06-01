@@ -24,11 +24,10 @@ public class CarsRepository {
 
     public CarsRepository() {
         mApiReference = RetrofitClientInstance.getRetrofitInstance().create(ApiReference.class);
+        mCars = new MutableLiveData<>();
     }
 
     public LiveData<List<Car>> getCars(int page) {
-        mCars = new MutableLiveData<>();
-
         mApiReference.getCars(page).enqueue(new Callback<CarResponse>() {
             @Override
             public void onResponse(Call<CarResponse> call, Response<CarResponse> response) {
@@ -36,6 +35,8 @@ public class CarsRepository {
                     int status = response.body().status;
                     if (status == 1)
                         mCars.setValue(response.body().data);
+                    else
+                        mCars.setValue(null);
                 }
             }
 

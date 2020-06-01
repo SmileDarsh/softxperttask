@@ -44,10 +44,14 @@ public class MainActivity extends AppCompatActivity {
         mViewModel.getCarsData().observe(this, new Observer<List<Car>>() {
             @Override
             public void onChanged(List<Car> cars) {
-                mProgress.setVisibility(View.GONE);
-                mCars.addAll(cars);
-                mAdapter.notifyDataSetChanged();
                 mIsLoader = false;
+                if(cars != null) {
+                    mProgress.setVisibility(View.GONE);
+                    mCars.addAll(cars);
+                }else{
+                    mAdapter.isLoaderVisible(mIsLoader);
+                }
+                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 mIsLoader = true;
                 mAdapter.isLoaderVisible(mIsLoader);
                 mPage++;
+                mViewModel.addPage(mPage);
             }
 
             @Override

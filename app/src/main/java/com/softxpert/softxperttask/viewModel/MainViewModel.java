@@ -13,11 +13,16 @@ import java.util.List;
  * ->
  */
 public class MainViewModel extends ViewModel {
+    private CarsRepository mCarsRepository;
     private LiveData<List<Car>> mCarLiveData;
 
     public MainViewModel() {
-        CarsRepository mCarsRepository = new CarsRepository();
+        mCarsRepository = new CarsRepository();
         mCarLiveData = mCarsRepository.getCars(1);
+    }
+
+    public void addPage(int page) {
+        mCarsRepository.getCars(page);
     }
 
     public LiveData<List<Car>> getCarsData() {
